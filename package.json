@@ -1,0 +1,11 @@
+{
+  "name": "ai-confidence",
+  "private": true,
+  "workspaces": ["apps/frontend", "packages/*"],
+  "scripts": {
+    "dev:fe": "npm --prefix apps/frontend run dev",
+    "lint:fe": "npm --prefix apps/frontend run lint",
+    "build:fe": "npm --prefix apps/frontend run build",
+    "start:fe": "npm --prefix apps/frontend run start"
+  }
+}
