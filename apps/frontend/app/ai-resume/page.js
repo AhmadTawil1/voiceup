@@ -1,92 +1,112 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function AIResumeLanding() {
+export default function Source() {
+  const router = useRouter();
   const [jobDescription, setJobDescription] = useState("");
 
-  const Card = ({ title, description, href, icon }) => (
-    <Link
-      href={href}
-      className="block rounded-2xl border border-zinc-200 hover:border-zinc-300 bg-white/80 hover:bg-white transition-colors p-6 shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-    >
-      <div className="flex items-center gap-4">
-        <div className="size-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-          {icon}
-        </div>
-        <div>
-          <div className="text-zinc-900 font-semibold">{title}</div>
-          <div className="text-zinc-500 text-sm mt-1">{description}</div>
-        </div>
-      </div>
-    </Link>
-  );
+  const sourceOptions = [
+    {
+      emoji: "📦",
+      title: "Use Saved Profile",
+      description: "Start with your existing resume data",
+    },
+    {
+      emoji: "✏️",
+      title: "Fill Form",
+      description: "Create a new resume from scratch",
+    },
+    {
+      emoji: "⬆️",
+      title: "Upload CV",
+      description: "Import from an existing document",
+    },
+  ];
 
   return (
-    <main className="min-h-[calc(100dvh-80px)] w-full bg-zinc-50">
-      <div className="mx-auto max-w-5xl px-4 py-12">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900">
-          Build Your FAANG-Ready Resume
-        </h1>
-        <p className="mt-2 text-zinc-600 max-w-2xl">
-          Choose your starting point and tailor your resume to any job
-        </p>
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card
-            title="Use Saved Profile"
-            description="Start with your existing resume data"
-            href="/ai-resume/editor"
-            icon={<span>💾</span>}
-          />
-          <Card
-            title="Fill Form"
-            description="Create a new resume from scratch"
-            href="/ai-resume/editor"
-            icon={<span>📄</span>}
-          />
-          <Card
-            title="Upload CV"
-            description="Import from an existing document"
-            href="/ai-resume/editor"
-            icon={<span>⤴️</span>}
-          />
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
+      {/* Navbar */}
+      <header className="border-b bg-white/70 backdrop-blur-md shadow-sm">
+        <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+          <div className="font-bold text-lg text-blue-600">VoiceUp</div>
+          <nav className="flex items-center gap-6 text-sm text-gray-600">
+            <a className="hover:text-blue-600 transition" href="/">Home</a>
+            <a className="hover:text-blue-600 transition" href="/about">About</a>
+            <a className="hover:text-blue-600 transition" href="/help">Help</a>
+          </nav>
         </div>
+      </header>
 
-        <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-6">
-          <h2 className="text-zinc-800 font-medium">Job Description (Optional)</h2>
-          <p className="text-sm text-zinc-500 mt-1">
-            Paste a job description to get AI-powered tailoring suggestions
-          </p>
-          <textarea
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            placeholder="Paste the job description here..."
-            className="mt-4 w-full min-h-48 rounded-xl border border-zinc-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none p-4 text-sm text-zinc-700"
-          />
-          <div className="mt-4">
-            <Link
-              href={{ pathname: "/ai-resume/editor", query: { jd: jobDescription ? "1" : "0" } }}
-              className="inline-flex items-center justify-center rounded-xl bg-blue-600 text-white px-6 py-3 font-medium shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      {/* Content */}
+      <main className="mx-auto max-w-4xl px-4 py-12">
+        <div className="space-y-10">
+          {/* Title */}
+          <div className="text-center space-y-3">
+            <h1 className="text-4xl font-extrabold text-gray-900">
+              Build Your <span className="text-blue-600">FAANG-Ready</span> Resume
+            </h1>
+            <p className="text-lg text-gray-600">
+              Choose your starting point and tailor your resume to any job
+            </p>
+          </div>
+
+          {/* Options */}
+          <div className="grid gap-6 md:grid-cols-3">
+            {sourceOptions.map((option) => (
+              <div
+                key={option.title}
+                className="p-6 rounded-xl border bg-white shadow-sm hover:shadow-lg hover:-translate-y-1 transform transition cursor-pointer"
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push("/profile")}
+                onKeyDown={(e) => e.key === "Enter" && router.push("/profile")}
+              >
+                <div className="space-y-4 text-center">
+                  <div className="flex h-12 w-12 mx-auto items-center justify-center rounded-lg bg-blue-100 text-2xl">
+                    {option.emoji}
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-gray-900">{option.title}</h3>
+                    <p className="text-sm text-gray-500">{option.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Job description */}
+          <div className="p-6 rounded-xl border bg-white shadow-sm space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Job Description (Optional)
+              </label>
+              <p className="text-sm text-gray-500">
+                Paste a job description to get AI-powered tailoring suggestions
+              </p>
+            </div>
+            <textarea
+              placeholder="Paste the job description here..."
+              className="w-full min-h-[200px] resize-none rounded-md border bg-gray-50 p-3 outline-none focus:ring-2 focus:ring-blue-500"
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+          </div>
+
+          {/* Continue button */}
+          <div className="flex justify-center">
+            <button
+              className="inline-flex items-center justify-center rounded-md px-12 py-3
+                         bg-blue-600 hover:bg-blue-700 text-white font-medium
+                         shadow-md transition active:scale-95"
+              onClick={() => router.push("/profile")}
             >
               Continue
-            </Link>
+            </button>
           </div>
-        </section>
-
-        <nav className="mt-8 flex gap-3 text-sm text-zinc-500">
-          <Link href="/ai-resume/editor" className="hover:text-zinc-800">Editor</Link>
-          <span>·</span>
-          <Link href="/ai-resume/preview" className="hover:text-zinc-800">Preview</Link>
-          <span>·</span>
-          <Link href="/ai-resume/portfolio" className="hover:text-zinc-800">Portfolio</Link>
-          <span>·</span>
-          <Link href="/ai-resume/versions" className="hover:text-zinc-800">Versions</Link>
-        </nav>
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   );
 }
-
-
